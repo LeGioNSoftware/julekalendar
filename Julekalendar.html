@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="nb">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SySIKT sin sikkerheitsjulekalender 2025</title>
+  <style>
+    :root{--bg:#0b1220;--card:#fff;--accent:#c62828}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#111;background:linear-gradient(180deg,#071227 0%, #05162a 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px}
+
+    .container{max-width:1000px;width:100%;}
+    h1{color:white;text-align:center;margin:0 0 18px;font-size:clamp(20px,4vw,36px)}
+    p.lead{color:#cbd5e1;text-align:center;margin:0 0 24px}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:16px}
+
+    .door{position:relative;perspective:1000px;height:120px}
+
+    .face{width:100%;height:100%;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;color:white;cursor:pointer;user-select:none;transition:transform .6s cubic-bezier(.2,.9,.2,1),box-shadow .2s;transform-style:preserve-3d;position:relative;box-shadow:0 6px 18px rgba(2,6,23,.6);background:linear-gradient(180deg,#e53935 0%, #b71c1c 100%)}
+
+    .face.locked{filter:grayscale(.35) brightness(.9);opacity:.7;cursor:not-allowed}
+    .face.flip{transform:rotateY(-180deg);transition:transform .8s cubic-bezier(.2,.9,.2,1)}
+
+    .face .front,.face .back{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:12px;backface-visibility:hidden;padding:12px}
+    .face .front{z-index:2}
+    .face .back{transform:rotateY(180deg);background:#fff;color:#111;flex-direction:column}
+
+    .door .number{font-size:32px;letter-spacing:1px}
+    .door .label{font-size:13px;opacity:.85;margin-top:6px}
+
+    .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,.55);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .18s}
+    .modal.open{opacity:1;pointer-events:auto}
+    .sheet{width:min(720px,94%);background:linear-gradient(180deg,#fff 0%, #fff);border-radius:14px;padding:20px;box-shadow:0 30px 80px rgba(2,6,23,.6);transform:translateY(20px) scale(.98);transition:transform .28s}
+    .modal.open .sheet{transform:translateY(0) scale(1)}
+
+    .sheet header{display:flex;align-items:center;justify-content:space-between}
+    .sheet h2{margin:0;font-size:20px}
+    .sheet .close{background:none;border:0;font-size:18px;cursor:pointer}
+
+    .content{margin-top:12px;color:#0b1220;line-height:1.45}
+    .content img{max-width:100%;border-radius:8px;margin-top:12px}
+
+    .snow{pointer-events:none;position:fixed;inset:0;z-index:0}
+    .snow i{position:absolute;top:-10px;opacity:.85;font-style:normal}
+    @keyframes fall{to{transform:translateY(120vh) rotate(360deg)}}
+
+    @media (max-width:520px){.door{height:88px}.face{font-size:20px}.door .number{font-size:24px}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>SySIKT sin sikkerheitsjulekalender 2025</h1>
+    <p class="lead">Klikk på dagens luke for å åpne den 🎄</p>
+
+    <div class="grid" id="calendar"></div>
+  </div>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="sheet">
+      <header>
+        <h2 id="modal-title">Dag</h2>
+        <button class="close" id="closeBtn">✕</button>
+      </header>
+      <div class="content" id="modalContent"></div>
+    </div>
+  </div>
+
+  <div class="snow"></div>
+
+  <script>
+    const today = new Date();
+    const currentDay = today.getDate();
+    const calendar = document.getElementById('calendar');
+
+    // Generate 24 doors
+    for(let d=1; d<=24; d++){
+      const door = document.createElement('div');
+      door.className = 'door';
+      const face = document.createElement('div');
+      face.className = 'face' + (d > currentDay ? ' locked' : '');
+      face.dataset.day = d;
+      face.tabIndex = 0;
+      face.innerHTML = `<div class='front'><div style='text-align:center'><div class='number'>${d}</div><div class='label'>${d}. Desember</div></div></div><div class='back' aria-hidden='true'><div style='font-size: 16px; font-weight:800'>Opnar dagens luke.</div></div>`;
+      door.appendChild(face);
+      calendar.appendChild(door);
+    }
+
+    const contentByDay = {};
+    for(let i=1;i<=24;i++){
+      contentByDay[i] = {
+        title: `${i}. desember`,
+        html: `<p>${["Et koselig dikt om snø","En varm kopp kakao og en god bok","En liten pepperkakeoppskrift","Et hyggelig juleminne","Et tips til julegave","Et bilde av en snødekt skog","Et juleordtak","En morsom julevits","Et sitat om vennskap","En julesang du bør høre","Et julekort fra nissen","En oppskrift på gløgg","Et juleeventyr","En DIY-idé","Et bilde av nordlys","En hyggelig melding","Et dikt om lys i mørket","Et juleminne fra barndommen","En oppskrift på risgrøt","En julefilm-anbefaling","Et lite mysterium","Et jule-quizspørsmål","Et takk for året","God jul og godt nyttår!"][i-1] || ''}</p>`
+      };
+    }
+
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modalContent');
+    const closeBtn = document.getElementById('closeBtn');
+
+    function openDay(faceEl){
+      const day = parseInt(faceEl.dataset.day);
+      if(day > currentDay){
+        alert(`Denne luken åpnes ${day}. desember! 🎅`);
+        return;
+      }
+      faceEl.classList.add('flip');
+      setTimeout(()=>{
+        const data = contentByDay[day];
+        modalTitle.textContent = data.title;
+        modalContent.innerHTML = data.html;
+        modal.classList.add('open');
+      },400);
+    }
+
+    function closeModal(){
+      modal.classList.remove('open');
+      const flipped = document.querySelector('.face.flip');
+      if(flipped) flipped.classList.remove('flip');
+    }
+
+    document.addEventListener('click', (e)=>{
+      const face = e.target.closest('.face');
+      if(face && !face.classList.contains('locked')) openDay(face);
+    });
+
+    document.addEventListener('keydown', (e)=>{
+      if((e.key === 'Enter' || e.key === ' ') && document.activeElement.classList.contains('face')){
+        openDay(document.activeElement);
+      }
+      if(e.key === 'Escape') closeModal();
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e)=>{if(e.target===modal)closeModal();});
+
+    (function makeSnow(){
+      const s = document.querySelector('.snow');
+      for(let i=0;i<28;i++){
+        const el = document.createElement('i');
+        el.textContent='❆';
+        el.style.left=Math.random()*100+'vw';
+        el.style.fontSize=(8+Math.random()*18)+'px';
+        el.style.opacity=0.6+Math.random()*0.4;
+        el.style.animation=`fall ${8+Math.random()*12}s linear ${Math.random()*-20}s infinite`;
+        s.appendChild(el);
+      }
+    })();
+  </script>
+</body>
+</html>
