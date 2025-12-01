@@ -86,14 +86,34 @@
       calendar.appendChild(door);
     }
 
-    const contentByDay = {};
-    for(let i=1;i<=24;i++){
-      contentByDay[i] = {
-        title: `${i}. desember`,
-        html: `<p>${["Et koselig dikt om snø","En varm kopp kakao og en god bok","En liten pepperkakeoppskrift","Et hyggelig juleminne","Et tips til julegave","Et bilde av en snødekt skog","Et juleordtak","En morsom julevits","Et sitat om vennskap","En julesang du bør høre","Et julekort fra nissen","En oppskrift på gløgg","Et juleeventyr","En DIY-idé","Et bilde av nordlys","En hyggelig melding","Et dikt om lys i mørket","Et juleminne fra barndommen","En oppskrift på risgrøt","En julefilm-anbefaling","Et lite mysterium","Et jule-quizspørsmål","Et takk for året","God jul og godt nyttår!"][i-1] || ''}</p>`
-      };
-    }
-
+    const contentByDay = {
+  1: { title: '1. desember', html: `<p>Sikkerheitstips 1: Ikkje kople deg til opne nettverk - då desse kan misbrukast av andre. <b>E</b></p>` },
+  2: { title: '2. desember', html: `<p>Sikkerheitstips 2: Del aldri passord med nokon – heller ikkje internt. <b>K</b></p>` },
+  3: { title: '3. desember', html: `<p>Sikkerheitstips 3: Ver forsiktig med lenker i e-post, spesielt frå ukjente avsendarar. <b>B</b></p>` },
+  4: { title: '4. desember', html: `<p>Sikkerheitstips 4: Ikkje bruk jobb-eposten til private tenester. <b>E</b></p>` },
+  5: { title: '5. desember', html: `<p>Sikkerheitstips 5: Lås PC-en når du forlèt arbeidsplassen. <b>A</b></p>` },
+  6: { title: '6. desember', html: `<p>Sikkerheitstips 6: Bruk fleirfaktorautentisering der det er mogleg. <b>P</b></p>` },
+  7: { title: '7. desember', html: `<p>Sikkerheitstips 7: Ver kritisk til vedlegg – skann dei før opning. <b>N</b></p>` },
+  8: { title: '8. desember', html: `<p>Sikkerheitstips 8: Klikka du på noko du ikkje burde? Sei ifrå — det er betre enn å skjule det. <b>E</b></p>` },
+  9: { title: '9. desember', html: `<p>Sikkerheitstips 9: Ikkje del meir enn nødvendig på sosiale medium. <b>P</b></p>` },
+  10: { title: '10. desember', html: `<p>Sikkerheitstips 10: Hugs å merke sensitiv informasjon riktig. <b>Y</b></p>` },
+  11: { title: '11. desember', html: `<p>Sikkerheitstips 11: Kontroller alltid e-post avsendaren — ikkje berre namn. <b>R</b></p>` },
+  12: { title: '12. desember', html: `<p>Sikkerheitstips 12: Varsle SySIKT ved mistenkeleg aktivitet. <b>K</b></p>` },
+  13: { title: '13. desember', html: `<p>Sikkerheitstips 13: Ver ekstra obs på phishing i julestria. <b>E</b></p>` },
+  14: { title: '14. desember', html: `<p>Sikkerheitstips 14: Sikre mobilen med PIN-kode og biometrisk lås. <b>P</b></p>` },
+  15: { title: '15. desember', html: `<p>Dagens luke er ein rebus. For å svare på den må du ha opna dei 14 første lukene og funnet alle bokstavane. Desse stavar eit juleord dersom du byttar om på rekkefølgja på bokstavane.<br>
+<br>Kva er ordet?(Hint:🍪🌆) <br>
+Send svaret på e‑post til <b>stig.hopland@sysikt.no</b> og merk eposten med <b>SySIKT - Julerebus</b> og du er med i trekkninga av ein liten julepressang.</p>` },
+  16: { title: '16. desember', html: `<p>Funfact: Julenissen sin raude drakt vart populær gjennom reklame på 1930‑tallet.</p>` },
+  17: { title: '17. desember', html: `<p>Funfact: Ordet ‘jol’ kjem frå norrønt og viser til midtvinterfest.</p>` },
+  18: { title: '18. desember', html: `<p>Funfact: Det første kjende juletreet i Noreg dukka opp på 1800‑tallet.</p>` },
+  19: { title: '19. desember', html: `<p>Funfact: 90 % av nordmenn oppgir at dei ser minst éin julefilm kvar desember.</p>` },
+  20: { title: '20. desember', html: `<p>Funfact: I informasjonssikkerheit er ‘julefreden’ ofte ein periode med auka hackeraktivitet.</p>` },
+  21: { title: '21. desember', html: `<p>Funfact: Dei første julekortene vart trykt i 1843.</p>` },
+  22: { title: '22. desember', html: `<p>Funfact: Julehefter er ein heilt norsk tradisjon frå 1911.</p>` },
+  23: { title: '23. desember', html: `<p>Funfact: Verdens største snømann vart bygd i Maine i USA i 2008 og var 37 meter høg.</p>` },
+  24: { title: '24. desember', html: `<p>Vi i SySIKT ønskjer deg ei god og fredeleg julefeiring! 🎄✨</p>` },
+};
     const modal = document.getElementById('modal');
     const modalTitle = document.getElementById('modal-title');
     const modalContent = document.getElementById('modalContent');
